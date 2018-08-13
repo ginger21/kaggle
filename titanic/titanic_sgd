@@ -1,2 +1,6 @@
 
 # 利用随机梯度下降分类器SGDClassifier来预测titanic生还率
+
+#读取数据
+import pandas as pd
+titanic_all = pd.read_csv('C:/py/kaggle/titanic/train.csv')
