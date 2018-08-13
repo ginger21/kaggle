@@ -1,8 +1,19 @@
 
 # 利用随机梯度下降分类器SGDClassifier来预测titanic生还率
 
-#读取数据
+# 读取数据
 import pandas as pd
 titanic_all = pd.read_csv('C:/py/kaggle/titanic/train.csv')
+
+# 选取 PassengerId, Pclass, Age, Sibsp&Parch 四个特征
 titanic_train = titanic_all[['PassengerId','Pclass']]
 titanic_train['Age'] = titanic_all['Age'].fillna(titanic_all['Age'].mean())
+# 警告： Try using .loc[row_indexer,col_indexer] = value instead
+
+# Issingle = Sibsp&Parch
+sibsp = titanic_all['SibSp']
+parch = titanic_all['Parch']
+issingle = sibsp + parch
+issingle[issingle>0] = 1
+titanic_train['Issingle'] = issingle 
+
