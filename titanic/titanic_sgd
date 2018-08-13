@@ -4,3 +4,5 @@
 #读取数据
 import pandas as pd
 titanic_all = pd.read_csv('C:/py/kaggle/titanic/train.csv')
+titanic_train = titanic_all[['PassengerId','Pclass']]
+titanic_train['Age'] = titanic_all['Age'].fillna(titanic_all['Age'].mean())
