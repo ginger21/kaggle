@@ -6,7 +6,7 @@ import pandas as pd
 titanic_all = pd.read_csv('C:/py/kaggle/titanic/train.csv')
 
 # 选取 Pclass, Sex, Age, Sibsp&Parch 四个特征
-titanic_train = titanic_all['Pclass']
+titanic_train = titanic_all[['Pclass', 'Age']]
 titanic_train['Age'] = titanic_all['Age'].fillna(titanic_all['Age'].mean())
 # 警告： Try using .loc[row_indexer,col_indexer] = value instead
 
@@ -14,13 +14,14 @@ titanic_train['Age'] = titanic_all['Age'].fillna(titanic_all['Age'].mean())
 sibsp = titanic_all['SibSp']
 parch = titanic_all['Parch']
 issingle = sibsp + parch
-issingle[issingle>0] = 1
+issingle[issingle>0] = 2
+issingle[issingle==0] = 1
 titanic_train['Issingle'] = issingle 
 
-# sexual: male = 1, female = 0
-sexual= titanic['Sex']
-sexual[sexual == 'male'] = 1
-sexual[sexual == 'female'] = 0
+# sexual: male = 2, female = 1
+sexual= titanic_all['Sex']
+sexual[sexual == 'male'] = 2
+sexual[sexual == 'female'] = 1
 titanic_train['Sex'] = sexual
 
 # titanic survived
@@ -34,3 +35,9 @@ sgd_clf.fit(titanic_train, titanic_sur)
 # 交叉验证
 from sklearn.model_selection import cross_val_score
 cross_val_score(sgd_clf, titanic_train, titanic_sur, cv=3, scoring="accuracy")
+
+# 数据标准化
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(titanic_train.astype(np.float64))
+
