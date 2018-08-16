@@ -1,5 +1,5 @@
 
-# 利用随机梯度下降分类器SGDClassifier来预测titanic生还率
+# 利用随机森林RandomForestClassifier来预测titanic生还率
 
 # 读取数据
 
@@ -28,17 +28,18 @@ titanic_train['Sex'] = sexual
 # titanic survived
 titanic_sur = titanic_all['Survived']
 
-# 训练模型
-from sklearn.linear_model import SGDClassifier
-sgd_clf = SGDClassifier(random_state=42)
-sgd_clf.fit(titanic_train, titanic_sur)
-
-# 交叉验证
-from sklearn.model_selection import cross_val_score
-cross_val_score(sgd_clf, titanic_train, titanic_sur, cv=3, scoring="accuracy")
-
 # 数据标准化
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(titanic_train.astype(np.float64))
+
+# 训练模型
+from sklearn.ensemble import RandomForestClassifier
+forest_clf = SGDClassifier(max_depth=2, random_state=0)
+sgd_clf.fit(X_train_scaled, titanic_sur)
+
+# 交叉验证
+from sklearn.model_selection import cross_val_score
+cross_val_score(forest_clf, X_train_scaled, titanic_sur, cv=3, scoring="accuracy")
+
