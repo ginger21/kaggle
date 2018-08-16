@@ -36,7 +36,7 @@ X_train_scaled = scaler.fit_transform(titanic_train.astype(np.float64))
 
 # 训练模型
 from sklearn.ensemble import RandomForestClassifier
-forest_clf = SGDClassifier(max_depth=2, random_state=0)
+forest_clf = SGDClassifier()
 forest_clf.fit(X_train_scaled, titanic_sur)
 
 # 交叉验证
