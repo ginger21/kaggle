@@ -1,1 +1,44 @@
 
+# 利用随机梯度下降分类器SGDClassifier来预测titanic生还率
+
+# 读取数据
+
+import pandas as pd
+titanic_all = pd.read_csv('C:/py/kaggle/titanic/train.csv')
+
+# 选取 Pclass, Sex, Age, Sibsp&Parch 四个特征
+titanic_train = titanic_all[['Pclass', 'Age']]
+titanic_train['Age'] = titanic_all['Age'].fillna(titanic_all['Age'].mean())
+# 警告： Try using .loc[row_indexer,col_indexer] = value instead
+
+# Issingle = Sibsp&Parch
+sibsp = titanic_all['SibSp']
+parch = titanic_all['Parch']
+issingle = sibsp + parch
+issingle[issingle>0] = 2
+issingle[issingle==0] = 1
+titanic_train['Issingle'] = issingle 
+
+# sexual: male = 2, female = 1
+sexual= titanic_all['Sex']
+sexual[sexual == 'male'] = 2
+sexual[sexual == 'female'] = 1
+titanic_train['Sex'] = sexual
+
+# titanic survived
+titanic_sur = titanic_all['Survived']
+
+# 训练模型
+from sklearn.linear_model import SGDClassifier
+sgd_clf = SGDClassifier(random_state=42)
+sgd_clf.fit(titanic_train, titanic_sur)
+
+# 交叉验证
+from sklearn.model_selection import cross_val_score
+cross_val_score(sgd_clf, titanic_train, titanic_sur, cv=3, scoring="accuracy")
+
+# 数据标准化
+import numpy as np
+from sklearn.preprocessing import StandardScaler
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(titanic_train.astype(np.float64))
