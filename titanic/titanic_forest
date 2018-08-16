@@ -7,7 +7,7 @@ import pandas as pd
 titanic_all = pd.read_csv('C:/py/kaggle/titanic/train.csv')
 
 # 选取 Pclass, Sex, Age, Sibsp&Parch 四个特征
-titanic_train = titanic_all[['Pclass', 'Age']]
+titanic_train = titanic_all[['Pclass', 'Age', 'SibSp', 'Parch']]
 titanic_train['Age'] = titanic_all['Age'].fillna(titanic_all['Age'].mean())
 # 警告： Try using .loc[row_indexer,col_indexer] = value instead
 
@@ -31,12 +31,12 @@ titanic_sur = titanic_all['Survived']
 # 数据标准化
 import numpy as np
 from sklearn.preprocessing import StandardScaler
-scaler = StandardScaler()
+scaler = RandomForestClassifier()
 X_train_scaled = scaler.fit_transform(titanic_train.astype(np.float64))
 
 # 训练模型
 from sklearn.ensemble import RandomForestClassifier
-forest_clf = SGDClassifier()
+forest_clf = RandomForestClassifier(max_depth=2, random_state=0)
 forest_clf.fit(X_train_scaled, titanic_sur)
 
 # 交叉验证
