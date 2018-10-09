@@ -42,3 +42,4 @@ from sklearn.preprocessing import StandardScaler
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(titanic_train.astype(np.float64))
 
+# 测试修改记录
